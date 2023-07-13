@@ -17,7 +17,7 @@ public class Consumer {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 	props.put("group.id", "karim-group-id-1"); 
-	props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer"); // key deserializer
+	props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer"); // value deserializer
 
 	KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);

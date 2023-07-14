@@ -18,22 +18,25 @@ public class Consumer {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 	props.put("group.id", "karim-group-id-1"); 
 	props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer"); // value deserializer
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.LongDeserializer"); // value deserializer
 
-	KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+	KafkaConsumer<String, Long> consumer = new KafkaConsumer<>(props);
 	consumer.subscribe(Collections.singletonList("wordcount-output"));
 	
 	String message = null;
+	String key = null;
         try {
             while(true) {
-                ConsumerRecords<String, String> records = consumer.poll(100);
+                ConsumerRecords<String, Long> records = consumer.poll(0);
 
-                for (ConsumerRecord<String, String> record : records) {
-                    message = record.value();
-                    System.out.println(message);
+                for (ConsumerRecord<String, Long> record : records) {
+                    message = record.value().toString();
+		    key = record.key();
+                    System.out.println(key + "------- " + message);
                 }
             }
         } catch(Exception e) {
+		System.out.println("Exception consumung");
         } finally {
             consumer.close();
         }
